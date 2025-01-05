@@ -10,7 +10,7 @@ def addProduct(conn):
     nbr=0
     while nbr<=0:
         nbr=int(input("Quantity"))
-    print(nbr,Product_name)
+        
     DB.insertProduct(conn,Product_name,nbr)
     menu.menu()
     
@@ -32,13 +32,32 @@ def update(conn):
         DB.updateProduct(conn,product,option,value)
     menu.menu()
     
-def showAllProduct(conn):
+def showAllProducts(conn):
     os.system('clear')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM products')
     products = cursor.fetchall()
     for product in products:
-        print(f"Name-> {product[1]}\tQte-> {product[2]}")
+        print("--------------------------------")
+        print(f"Name-> {product[1]}")
+        print(f"Qte-> {product[2]}")
+    seccess()
+
+def showProducts(conn):
+    os.system('clear')
+    name=input("enter name of product that you want to show")
+    cursor=conn.cursor()
+    cursor.execute('SELECT * FROM products WHERE name=?', (name,))
+    products = cursor.fetchall()
+    for product in products:
+        print("--------------------------------")
+        print(f"Name-> {product[1]}")
+        print(f"Qte-> {product[2]}")
+    
+    seccess()
+    
+    
+def seccess():
     option="0"
     while option!="1" and option!="2":
         print("\n1-> Back to menu")
@@ -48,4 +67,16 @@ def showAllProduct(conn):
         menu.menu()
     else:
         exit(0)
-        
+
+def delete(conn):
+    os.system('clear')
+    name=input("enter name of product that you want to delete: ")
+    cursor=conn.cursor()
+    cursor.execute('DELETE FROM products WHERE name=?', (name,))
+    seccess()
+    
+    
+def clear(conn):
+    cursor=conn.cursor()
+    cursor.execute('DROP TABLE products')
+    exit(0)

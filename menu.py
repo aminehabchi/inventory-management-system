@@ -20,16 +20,17 @@ def menu():
             funcs.update(conn)
             return 
         case "3":
-            # deleteProduct()
+            funcs.delete(conn)
             return 
         case "4":
-            funcs.showAllProduct(conn)
+            funcs.showAllProducts(conn)
             return 
         case "5":
-            # srearsh()
+            funcs.showProducts(conn)
             return 
         case "6":
             # clear()
+            funcs.clear(conn)
             return 
         case "7":
             exit(0)

@@ -5,7 +5,7 @@ def createTable():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
+        name TEXT NOT NULL UNIQUE,
         quantity INTEGER
     )
     ''')
@@ -13,12 +13,22 @@ def createTable():
     return conn
 
 def insertProduct(conn,Product_name,nbr):
-    cursor = conn.cursor()
-    cursor.execute('''
-    INSERT INTO products (name, quantity)
-    VALUES (?, ?)
-    ''', (Product_name, nbr))
-    conn.commit()
+    try:
+        cursor = conn.cursor()
+        cursor.execute('''
+        INSERT INTO products (name, quantity)
+        VALUES (?, ?)
+        ''', (Product_name, nbr))
+        conn.commit()
+        print("Product inserted successfully.")
+    except sqlite3.IntegrityError as e:
+        print(f"Integrity Error: {e}")
+    except sqlite3.OperationalError as e:
+        print(f"Operational Error: {e}")
+    except sqlite3.DatabaseError as e:
+        print(f"Database Error: {e}")
+    except Exception as e:
+        print(f"Unexpected Error: {e}")
 
 def updateProduct(conn,product,option,value):
     
